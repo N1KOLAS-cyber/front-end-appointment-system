@@ -1,0 +1,192 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.flutter-plugins
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+
+
+
+
+# Firebase configuration files (CRITICAL - NEVER COMMIT)
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+ios/firebase-app-id-file.json
+web/firebase-config.js
+lib/firebase_options.dart
+
+# Firebase CLI and cache files
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+.firebaserc
+
+# Environment variables and secrets
+.env
+.env.*
+.env.local
+.env.production
+.env.development
+secrets.*
+*.key
+*.p12
+*.pem
+*.cert
+*.crt
+
+# Firebase Admin SDK keys (if you use them)
+*-firebase-adminsdk-*.json
+service-account-key.json
+
+
+
+
+# Flutter build files
+flutter_assets/**
+.flutter-plugins-dependencies
+.flutter-plugins
+.fvm/
+
+# Android specific
+android/**/gradle-wrapper.jar
+android/.gradle/
+android/local.properties
+android/**/GeneratedPluginRegistrant.java
+android/**/android_gen/
+android/**/assets/
+
+# iOS specific
+ios/.generated/
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+ios/Flutter/App.framework/
+ios/Flutter/app.flx/
+ios/Flutter/app.zip/
+ios/Flutter/flutter_assets/
+ios/Flutter/Flutter.dll
+ios/ServiceDefinitions.json
+ios/Runner/GeneratedPluginRegistrant.*
+
+# macOS specific
+macos/Flutter/Flutter.framework/
+macos/Flutter/Flutter.podspec
+macos/Flutter/GeneratedPluginRegistrant.*
+
+# Windows specific
+windows/flutter/
+windows/Flutter.dll
+windows/Flutter/
+
+# Web specific
+web/
+
+# Development tools
+.vscode/
+.idea/
+*.code-workspace
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# ========================================
+# 📱 PLATFORM SPECIFIC EXCLUSIONS
+# ========================================
+
+# Android
+android/**/build/
+android/**/proguard/
+android/**/lint/
+android/**/outputs/
+android/**/intermediates/
+
+# iOS
+ios/**/build/
+ios/**/Pods/
+ios/Podfile.lock
+ios/**/DerivedData/
+ios/**/xcuserdata/
+
+# macOS
+macos/**/build/
+macos/**/DerivedData/
+macos/**/xcuserdata/
+
+# Windows
+windows/**/build/
+windows/**/Debug/
+windows/**/Release/
+windows/**/x64/
+windows/**/x86/
+
+# Linux
+linux/**/build/

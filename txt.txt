@@ -1,0 +1,319 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  // Función para guardar cita demo en la colección 'DocApp'
+  Future<void> _guardarCitaDemo(BuildContext context) async {
+    try {
+      await FirebaseFirestore.instance.collection('DocApp').add(
+        {
+          'paciente': 'Frick Estrella',
+          'motivo': 'Revision general',
+          'fecha': '2025-09-30',
+          'creadoEn': FieldValue.serverTimestamp(),
+        }
+      );
+      
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Cita guardada en DocApp'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  // Función para guardar múltiples citas de prueba
+  Future<void> _guardarCitasPrueba(BuildContext context) async {
+    try {
+      // Lista de 11 pacientes de prueba
+      final List<Map<String, String>> pacientes = [
+        {
+          'paciente': 'Erick Estrella', 
+          'sintoma': 'Dolor de cabeza', 
+          'fecha': '2025-09-20'
+        },
+        {
+          'paciente': 'María González', 
+          'sintoma': 'Fiebre y escalofríos', 
+          'fecha': '2025-09-21'
+        },
+        {
+          'paciente': 'Carlos Rodríguez', 
+          'sintoma': 'Dolor abdominal', 
+          'fecha': '2025-09-22'
+        },
+        {
+          'paciente': 'Laura Martínez', 
+          'sintoma': 'Consulta prenatal', 
+          'fecha': '2025-09-23'
+        },
+        {
+          'paciente': 'Jorge López', 
+          'sintoma': 'Presión arterial alta', 
+          'fecha': '2025-09-24'
+        },
+        {
+          'paciente': 'Ana Sánchez', 
+          'sintoma': 'Control diabetes', 
+          'fecha': '2025-09-25'
+        },
+        {
+          'paciente': 'Miguel Díaz', 
+          'sintoma': 'Dolor articular', 
+          'fecha': '2025-09-26'
+        },
+        {
+          'paciente': 'Sofía Ramírez', 
+          'sintoma': 'Alergia estacional', 
+          'fecha': '2025-09-27'
+        },
+        {
+          'paciente': 'David Torres', 
+          'sintoma': 'Lesión deportiva', 
+          'fecha': '2025-09-28'
+        },
+        {
+          'paciente': 'Elena Castro', 
+          'sintoma': 'Chequeo anual', 
+          'fecha': '2025-09-29'
+        },
+        {
+          'paciente': 'Pedro Vargas', 
+          'sintoma': 'Problemas respiratorios', 
+          'fecha': '2025-09-30'
+        },
+      ];
+
+      // Guardar cada paciente en Firestore
+      for (var paciente in pacientes) {
+        await FirebaseFirestore.instance.collection('citas_prueba').add({
+          'paciente': paciente['paciente'],
+          'sintoma': paciente['sintoma'],
+          'fecha': paciente['fecha'],
+          'creadoEn': FieldValue.serverTimestamp(),
+        });
+      }
+      
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('11 citas de prueba guardadas en citas_prueba'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Sistema de Citas Médicas'),
+        backgroundColor: Colors.blue[700],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete_outline),
+            onPressed: () => _eliminarTodasLasCitas(context),
+            tooltip: 'Eliminar todas las citas',
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Botón para guardar cita demo
+            ElevatedButton(
+              onPressed: () => _guardarCitaDemo(context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+              ),
+              child: const Text(
+                'Guardar cita demo (DocApp)',
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 16),
+            
+            // Botón para guardar 11 citas de prueba
+            ElevatedButton(
+              onPressed: () => _guardarCitasPrueba(context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+              ),
+              child: const Text(
+                'Guardar 11 citas de prueba (citas_prueba)',
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 32),
+            
+            // Título para la sección de lecturas
+            const Text(
+              'Citas almacenadas:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            
+            // Lectura de datos de Firestore (parte opcional)
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('citas_prueba')
+                    .orderBy('creadoEn', descending: true)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  }
+                  
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  
+                  if (snapshot.data!.docs.isEmpty) {
+                    return const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.calendar_today, size: 50, color: Colors.grey),
+                          SizedBox(height: 16),
+                          Text('No hay citas guardadas aún.'),
+                          Text('Presiona el botón para agregar 11 citas de prueba.'),
+                        ],
+                      ),
+                    );
+                  }
+                  
+                  return ListView(
+                    children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                      Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                      return Card(
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        elevation: 3,
+                        child: ListTile(
+                          leading: const Icon(Icons.person, color: Colors.blue),
+                          title: Text(
+                            data['paciente'] ?? 'Sin nombre',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Síntoma: ${data['sintoma'] ?? 'No especificado'}'),
+                              Text('Fecha: ${data['fecha'] ?? 'No especificada'}'),
+                            ],
+                          ),
+                          trailing: Text(
+                            'ID: ${document.id.substring(0, 5)}...',
+                            style: const TextStyle(fontSize: 10, color: Colors.grey),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      
+      // Mensaje de confirmación de Firebase
+      persistentFooterAlignment: AlignmentDirectional.center,
+      persistentFooterButtons: [
+        const Text(
+          "✅ Firebase inicializado correctamente",
+          style: TextStyle(color: Colors.green, fontSize: 16),
+        ),
+      ],
+    );
+  }
+
+  // Función para eliminar todas las citas (opcional)
+  Future<void> _eliminarTodasLasCitas(BuildContext context) async {
+    try {
+      // Obtener todos los documentos de la colección
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('citas_prueba')
+          .get();
+      
+      // Eliminar cada documento
+      for (var doc in querySnapshot.docs) {
+        await doc.reference.delete();
+      }
+      
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Todas las citas han sido eliminadas'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error al eliminar: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+}
